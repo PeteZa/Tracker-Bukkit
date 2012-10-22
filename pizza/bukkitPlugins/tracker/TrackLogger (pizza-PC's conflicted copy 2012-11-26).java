@@ -32,7 +32,7 @@ public class TrackLogger implements Listener{
 		if(tracks.containsKey(xC+" " + yC)){
 			Tracks track = tracks.get(xC+" " + yC);
 			String [] a = track.getTracks();
-			return a[0] + System.lineSeparator()  +  a[1] + System.lineSeparator() + a[2] + System.lineSeparator()+ a[3] + System.lineSeparator() + System.lineSeparator() ;
+			return a[0] + System.lineSeparator()  +  a[1] + System.lineSeparator() + a[2] + System.lineSeparator()+ a[3] + System.lineSeparator();
 		}
 		else{
 			return "You find no tracks";
@@ -72,8 +72,7 @@ public class TrackLogger implements Listener{
 		int x = loc.getBlockX()/MineTracker.getInstance().getTrackingDist(), y = loc.getBlockZ()/MineTracker.getInstance().getTrackingDist(); // current location
 		int [] cl = PosData.getPosData(e.getPlayer()); // the location of their tracks
 		if(cl[0] !=x){// has moved off it on the x plane
-			PosData.invalidate(e.getPlayer());
-			e.getPlayer().setMetadata("Track", new LazyMetadataValue(MineTracker.getInstance(), new PosData(e.getPlayer().getLocation())));
+			
 			if(!tracks.containsKey(cl[0]+" " + cl[1]) && leaveTrack){
 				tracks.put(cl[0]+" " + cl[1], new Tracks());
 			}
@@ -91,12 +90,13 @@ public class TrackLogger implements Listener{
 				}
 			}
 			if(p.hasMetadata("autotrack")){
-				Pinger.addPLayer(p);
+				Teller.addPlayerMes(p, cl[0], cl[1]);
 			}
-		}
-		else if(cl[1] != y){ // moved on the y plane (z in MC)
 			PosData.invalidate(e.getPlayer());
 			e.getPlayer().setMetadata("Track", new LazyMetadataValue(MineTracker.getInstance(), new PosData(e.getPlayer().getLocation())));
+		}
+		else if(cl[1] != y){ // moved on the y plane (z in MC)
+			
 			if(!tracks.containsKey(cl[0]+" " + cl[1]) && leaveTrack){
 				tracks.put(cl[0]+" " + cl[1], new Tracks());
 			}
@@ -113,8 +113,10 @@ public class TrackLogger implements Listener{
 				}
 			}
 			if(p.hasMetadata("autotrack")){
-				Pinger.addPLayer(p);
+				Teller.addPlayerMes(p, cl[0], cl[1]);
 			}
+			PosData.invalidate(e.getPlayer());
+			e.getPlayer().setMetadata("Track", new LazyMetadataValue(MineTracker.getInstance(), new PosData(e.getPlayer().getLocation())));
 		}
 	}
 	
