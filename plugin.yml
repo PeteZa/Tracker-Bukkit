@@ -1,0 +1,16 @@
+name: MineTracker
+main: pizza.bukkitPlugins.tracker.MineTracker
+version: 1.0
+
+
+commands:
+   track:
+      description: This command looks for tracks on the ground
+      usage: /track
+      permission: MineTracker.track
+      permission-message: You don't have MineTracker.track permission 
+   autotrack:
+      description: This command automaticaly looks for tracks on the ground
+      usage: /autotrack 1 or 0
+      permission: MineTracker.autotrack
+      permission-message: You don't have MineTracker.autotrack permission 
