@@ -1,5 +1,6 @@
 package pizza.bukkitPlugins.tracker;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class Tracks{
 			MineTracker.getInstance().getServer().getScheduler().scheduleAsyncDelayedTask(MineTracker.getInstance(),bob , MineTracker.getInstance().getTrackLastTime());
 		}
 	}
-	public String[] getTracks(){
+	public ArrayList<String>  getTracks(){
 		Iterator<Cell> iter = listTracks.iterator();
 		int n = 0,w = 0,e = 0,s = 0;
 		while(iter.hasNext()){
@@ -59,11 +60,15 @@ public class Tracks{
 					iter.remove();
 					
 		}
-		String [] ret = new String[4];
-		ret[0] = howMany(n) + "headed East. ";
-		ret[1] = howMany(e) + "headed South. ";
-		ret[2] = howMany(s) + "headed West. ";  
-		ret[3] = howMany(w) + "headed North. ";
+		ArrayList<String> ret = new ArrayList<String>();
+		if(n != 0)
+		ret.add(howMany(n) + "headed East. ");
+		if(e != 0)
+			ret.add(howMany(e) + "headed South. ");
+		if(s!= 0)
+			ret.add(howMany(s) + "headed West. "); 
+		if(w != 0)
+			ret.add(howMany(w) + "headed North. ");
 		return ret;
 	}
 	private String howMany(int c){

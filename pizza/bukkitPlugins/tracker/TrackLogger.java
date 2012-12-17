@@ -1,5 +1,6 @@
 package pizza.bukkitPlugins.tracker;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Location;
@@ -31,8 +32,15 @@ public class TrackLogger implements Listener{
 		//MineTracker.plugin.getServer().getLogger().info("Tracking "+ xC + "," + yC);
 		if(tracks.containsKey(xC+" " + yC)){
 			Tracks track = tracks.get(xC+" " + yC);
-			String [] a = track.getTracks();
-			return a[0] + System.lineSeparator()  +  a[1] + System.lineSeparator() + a[2] + System.lineSeparator()+ a[3] + System.lineSeparator() + System.lineSeparator() ;
+			ArrayList<String>  a = track.getTracks();
+			if(a.isEmpty())
+				return "You find no tracks";
+			String ret = "";
+			for(int i = 0; i < a.size();i++){
+				ret = ret + a.get(i) + System.lineSeparator();
+			}
+			ret = ret + "END";
+			return ret;
 		}
 		else{
 			return "You find no tracks";
