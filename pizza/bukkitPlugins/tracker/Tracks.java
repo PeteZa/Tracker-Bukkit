@@ -1,6 +1,7 @@
 package pizza.bukkitPlugins.tracker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +17,12 @@ public class Tracks{
 	
 	private class Cell implements Runnable{
 		int id;
-		
+		Calendar timestamp;
 		int dir;
-		public Cell(int i, int d ){
+		public Cell(int i, int d,Calendar ts ){
 			id = i;
 			dir = d;
+			timestamp = ts;
 			
 		}
 		@Override
@@ -35,10 +37,11 @@ public class Tracks{
 	}
 	public void addTrack(Player p,int dir){
 		if(!exists(p.getEntityId(), dir)){
-			Cell bob = new Cell(p.getEntityId(), dir);
+			Cell bob = new Cell(p.getEntityId(), dir, Calendar.getInstance() );
 			listTracks.add(bob);
 			MineTracker.getInstance().getServer().getScheduler().scheduleAsyncDelayedTask(MineTracker.getInstance(),bob , MineTracker.getInstance().getTrackLastTime());
 		}
+		
 	}
 	public ArrayList<String>  getTracks(){
 		Iterator<Cell> iter = listTracks.iterator();
@@ -74,22 +77,27 @@ public class Tracks{
 	private String howMany(int c){
 		if(c == 0)
 			return "There are no tracks ";
-		else if(c <= 1)
+		else if(c == 1)
 			return "There is one track ";
-		else if(c == 3)
+		else if(c == 2)
 			return "There are a couple tracks ";
 		else if(c == 3 || c == 4)
 			return "There are a few tracks ";
 		else 
-			return "There are a lot of tracks ";
+			return "There are a lot of tracks ";		
 	}
 	private boolean exists(int id, int dir){
 		boolean found = false;
 		Iterator<Cell> iter = listTracks.iterator();
 		while(!found && iter.hasNext()){
 			Cell temp = iter.next();
-			if(temp.id == id && temp.dir == dir)
-				found = true;
+			if(temp.id == id && temp.dir == dir){
+				Calendar c;
+				c = Calendar.getInstance();
+				c.add(Calendar.MINUTE, -1);
+				if(temp.timestamp.after(c))
+					found = true;
+			}
 		}
 		return found;
 	}
